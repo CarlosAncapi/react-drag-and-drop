@@ -1,5 +1,5 @@
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialTodos = [
   { id: 1, text: "Aprender React" },
@@ -10,6 +10,10 @@ const initialTodos = [
 
 const App = () => {
   const [todos, setTodos] = useState(initialTodos);
+
+  useEffect(() =>{
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
