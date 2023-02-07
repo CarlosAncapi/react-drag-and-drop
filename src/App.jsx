@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
 
-const initialTodos = [
+const initialTodos = JSON.parse(localStorage.getItem("todos")) || [
   { id: 1, text: "Aprender React" },
   { id: 2, text: "Aprender JavaScript" },
   { id: 3, text: "Aprender Vue.js" },
