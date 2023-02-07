@@ -1,3 +1,4 @@
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useState } from "react";
 
 const initialTodos= [
@@ -8,19 +9,47 @@ const initialTodos= [
 ]
 
 const App = () => {
-  const [todos,stTodos] = useState(initialTodos)
+  const [todos,setTodos] = useState(initialTodos)
 
   return (
-    <>
-    <h1>Todo app</h1>
-    <ul>
-      {
-        todos.map(todo=> (
-          <li key={todo.id}>{todo.text}</li>
-        ))
-      }
-    </ul>
-    </>
+    <DragDropContext>
+      <h1>Todo app</h1>
+      <Droppable droppableId="todos">
+        {
+          (DroppableProvider) => (
+            <ul 
+              ref={DroppableProvider.innerRef} 
+              {...DroppableProvider.droppableProps}
+            >
+              {
+                todos.map( ( todo, index )=> (
+                  <Draggable 
+                    index={index}
+                    key={todo.id} 
+                    draggableId={`${todo.id}`}
+                  >
+                    {
+                      (draggableProvider) => (
+                        <li 
+                          ref={draggableProvider.innerRef}
+                          {...draggableProvider.dragHandleProps}
+                          {...draggableProvider.draggableProps}
+                        >
+                          {todo.text}
+                        </li>
+                      )
+                    }
+                  </Draggable>
+                ))
+              }
+              
+              {DroppableProvider.placeholder}
+              
+            </ul>
+          )
+        }
+      </Droppable>
+    </DragDropContext>
   )
 
 };
